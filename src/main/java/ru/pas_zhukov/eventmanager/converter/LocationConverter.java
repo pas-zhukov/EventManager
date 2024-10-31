@@ -2,6 +2,7 @@ package ru.pas_zhukov.eventmanager.converter;
 
 import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
+import ru.pas_zhukov.eventmanager.dto.response.LocationResponseDto;
 import ru.pas_zhukov.eventmanager.entity.LocationEntity;
 import ru.pas_zhukov.eventmanager.model.Location;
 
@@ -20,7 +21,7 @@ public class LocationConverter {
         return new Location(locationRequestDto.getId(), locationRequestDto.getName(), locationRequestDto.getAddress(), locationRequestDto.getCapacity(), locationRequestDto.getDescription());
     }
 
-    public Location toResponseDto(Location location) {
-        return new Location(location.getId(), location.getName(), location.getAddress(), location.getCapacity(), location.getDescription());
+    public LocationResponseDto toResponseDto(Location location) {
+        return new LocationResponseDto(location.getId(), location.getName(), location.getAddress(), location.getCapacity(), location.getDescription());
     }
 }

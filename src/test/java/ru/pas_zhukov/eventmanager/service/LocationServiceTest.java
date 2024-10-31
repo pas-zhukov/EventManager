@@ -1,22 +1,12 @@
-package ru.pas_zhukov.eventmanager;
+package ru.pas_zhukov.eventmanager.service;
 
-import jakarta.transaction.Transactional;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureJdbc;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Propagation;
 import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.model.Location;
-import ru.pas_zhukov.eventmanager.repository.LocationRepository;
-import ru.pas_zhukov.eventmanager.service.LocationService;
 
 @SpringBootTest
 public class LocationServiceTest {
