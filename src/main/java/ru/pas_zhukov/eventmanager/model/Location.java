@@ -1,6 +1,8 @@
 package ru.pas_zhukov.eventmanager.model;
 
 
+import java.util.Objects;
+
 public class Location {
     private Long id;
     private String name;
@@ -56,5 +58,18 @@ public class Location {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equals(id, location.id) && Objects.equals(name, location.name) && Objects.equals(address, location.address) && Objects.equals(capacity, location.capacity) && Objects.equals(description, location.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, capacity, description);
     }
 }

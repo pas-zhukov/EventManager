@@ -1,9 +1,11 @@
 package ru.pas_zhukov.eventmanager.converter;
 
+import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.entity.LocationEntity;
 import ru.pas_zhukov.eventmanager.model.Location;
 
+@Component
 public class LocationConverter {
 
     public LocationEntity toEntity(Location location) {
