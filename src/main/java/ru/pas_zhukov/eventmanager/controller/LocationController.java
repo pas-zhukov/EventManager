@@ -1,11 +1,11 @@
 package ru.pas_zhukov.eventmanager.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.pas_zhukov.eventmanager.converter.LocationConverter;
+import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.LocationResponseDto;
 import ru.pas_zhukov.eventmanager.entity.LocationEntity;
 import ru.pas_zhukov.eventmanager.repository.LocationRepository;
@@ -29,6 +29,12 @@ public class LocationController {
         this.locationRepository = locationRepository;
     }
 
+    @PostMapping
+    public ResponseEntity<LocationResponseDto> createOne(@RequestBody @Valid LocationRequestDto locationToCreate) {
+        LocationResponseDto createdLocation = locationConverter.toResponseDto(locationService.createLocation(locationConverter.toDomain(locationToCreate)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdLocation);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<LocationResponseDto> getOne(@PathVariable Long id) {
         return ResponseEntity.ok(locationConverter.toResponseDto(locationService.getLocationById(id)));
@@ -37,6 +43,18 @@ public class LocationController {
     @GetMapping
     public ResponseEntity<List<LocationResponseDto>> getAll() {
         return ResponseEntity.ok(locationService.getAllLocations().stream().map(locationConverter::toResponseDto).toList());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<LocationResponseDto> updateOne(@PathVariable Long id, @RequestBody @Valid LocationRequestDto locationToUpdate) {
+        LocationResponseDto updatedLocation = locationConverter.toResponseDto(locationService.updateLocation(id, locationConverter.toDomain(locationToUpdate)));
+        return ResponseEntity.ok(updatedLocation);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<LocationResponseDto> deleteOne(@PathVariable Long id) {
+        locationService.deleteLocation(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

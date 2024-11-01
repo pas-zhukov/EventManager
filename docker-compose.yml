@@ -1,0 +1,28 @@
+services:
+  database:
+    container_name: "postgres-db"
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      DATABASE_URL: jdbc:postgresql://postgres-db:5432/postgres
+    volumes:
+      - ./event-manager-db:/var/lib/event-manager-db
+    ports:
+      - "5432:5432"
+
+  event-manager:
+    build: .
+    container_name: "event-manager"
+    restart: always
+    depends_on:
+      - database
+    environment:
+      DB_URL: jdbc:postgresql://postgres-db:5432/postgres
+      DB_USER: postgres
+      DB_PASSWORD: 12345
+      DDL_AUTO: create-drop
+    ports:
+      - "8081:8081"
