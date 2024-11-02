@@ -4,14 +4,14 @@ import jakarta.validation.constraints.*;
 
 public class LocationRequestDto {
 
-    @Null
+    @Null(message = "Id should not be specified")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Name should not be blank or null")
     @Size(min = 2, max = 50)
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Address should not be blank or null")
     private String address;
 
     @Min(5)

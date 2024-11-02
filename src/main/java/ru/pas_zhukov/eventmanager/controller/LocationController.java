@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.LocationResponseDto;
-import ru.pas_zhukov.eventmanager.entity.LocationEntity;
-import ru.pas_zhukov.eventmanager.repository.LocationRepository;
 import ru.pas_zhukov.eventmanager.service.LocationService;
 
 import java.util.List;
@@ -20,13 +18,9 @@ public class LocationController {
     private final LocationService locationService;
     private final LocationConverter locationConverter;
 
-    private final LocationRepository locationRepository;
-
-    public LocationController(LocationService locationService, LocationConverter locationConverter,
-                              LocationRepository locationRepository) {
+    public LocationController(LocationService locationService, LocationConverter locationConverter) {
         this.locationService = locationService;
         this.locationConverter = locationConverter;
-        this.locationRepository = locationRepository;
     }
 
     @PostMapping
