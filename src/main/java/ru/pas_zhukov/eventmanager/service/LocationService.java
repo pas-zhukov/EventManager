@@ -42,11 +42,10 @@ public class LocationService {
     }
 
     @Transactional
-    public void deleteLocation(Long locationId) {
-        if (!locationRepository.existsById(locationId)) {
-          throw new EntityNotFoundException("Location with id %s not found".formatted(locationId));
-        }
+    public Location deleteLocation(Long locationId) {
+        LocationEntity location = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException("Location with id %s not found".formatted(locationId)));
         locationRepository.deleteById(locationId);
+        return locationConverter.toDomain(location);
     }
 
     @Transactional
