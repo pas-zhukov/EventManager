@@ -24,13 +24,11 @@ public class LocationService {
         this.locationConverter = locationConverter;
     }
 
-    @Transactional
     public Location createLocation(Location location) {
         LocationEntity createdLocation =  locationRepository.save(locationConverter.toEntity(location));
         return locationConverter.toDomain(createdLocation);
     }
 
-    @Transactional
     public Location updateLocation(Long locationId, Location location) {
         LocationEntity locationToUpdate = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException("Location with id %s not found".formatted(locationId)));
         locationToUpdate.setName(location.getName());
@@ -41,20 +39,17 @@ public class LocationService {
         return locationConverter.toDomain(locationToUpdate);
     }
 
-    @Transactional
     public Location deleteLocation(Long locationId) {
         LocationEntity location = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException("Location with id %s not found".formatted(locationId)));
         locationRepository.deleteById(locationId);
         return locationConverter.toDomain(location);
     }
 
-    @Transactional
     public Location getLocationById(Long locationId) {
         LocationEntity location = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException("Location with id %s not found".formatted(locationId)));
         return locationConverter.toDomain(location);
     }
 
-    @Transactional
     public List<Location> getAllLocations() {
         List<LocationEntity> locationEntities = locationRepository.findAll();
         return locationEntities.stream().map(locationConverter::toDomain).toList();

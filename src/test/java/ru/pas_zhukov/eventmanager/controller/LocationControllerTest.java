@@ -131,8 +131,12 @@ public class LocationControllerTest {
                 null);
         Location createdLocation = locationService.createLocation(sourceLocation);
 
-        mockMvc.perform(delete("/locations/{id}", createdLocation.getId()))
-                .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
+        String deletedLocationJson = mockMvc.perform(delete("/locations/{id}", createdLocation.getId()))
+                .andExpect(status().is(HttpStatus.OK.value()))
+                        .andReturn()
+                                .getResponse().getContentAsString();
+        Location deletedLocation = jacksonObjectMapper.readValue(deletedLocationJson, Location.class);
+        org.assertj.core.api.Assertions.assertThat(deletedLocation).usingRecursiveComparison().isEqualTo(createdLocation);
 
         mockMvc.perform(get("/locations/{id}", createdLocation.getId()))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
