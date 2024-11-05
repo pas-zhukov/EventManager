@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.model.Location;
@@ -18,18 +19,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class LocationControllerTest {
+public class LocationControllerTest extends TestInContainer {
 
     @Autowired
     private LocationService locationService;
     @Autowired
     private LocationConverter locationConverter;
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper jacksonObjectMapper;
 
     @Test
     public void shouldSuccessOnCreateLocation() throws Exception {

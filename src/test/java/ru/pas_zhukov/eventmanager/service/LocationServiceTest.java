@@ -4,12 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.model.Location;
 
-@SpringBootTest
-public class LocationServiceTest {
+
+public class LocationServiceTest extends TestInContainer {
 
     @Autowired
     private LocationService locationService;
