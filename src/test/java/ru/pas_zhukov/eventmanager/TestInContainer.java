@@ -11,8 +11,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.security.SecureRandom;
-
 @AutoConfigureMockMvc
 @SpringBootTest
 public class TestInContainer {

@@ -3,7 +3,6 @@ package ru.pas_zhukov.eventmanager.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
