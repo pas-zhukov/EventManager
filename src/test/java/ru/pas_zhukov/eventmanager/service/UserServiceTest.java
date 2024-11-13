@@ -15,8 +15,8 @@ public class UserServiceTest extends TestInContainer {
     @Test
     public void successOnRegisterUser() {
         SignUpRequestDto userToCreate = new SignUpRequestDto(
-                "user",
-                "password",
+                "user123",
+                "password123",
                 100);
         User createdUser = userService.registerUser(userToCreate);
 
