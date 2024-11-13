@@ -3,6 +3,7 @@ package ru.pas_zhukov.eventmanager.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.dto.request.SignInRequestDto;
@@ -40,6 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserResponseDto> getOne(@PathVariable Long id) {
         return ResponseEntity.ok(userConverter.toResponseDto(userService.getUserById(id)));
     }

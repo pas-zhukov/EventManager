@@ -48,7 +48,7 @@ public class UserControllerTest extends TestInContainer {
     }
 
     @Test
-    @WithMockUser(username = "testadmin", roles = {"ADMIN"})
+    @WithMockUser(username = "testadmin", authorities = {"ADMIN"})
     public void shouldSuccessOnGetUserById() throws Exception {
         User createdUser = userService.registerUser(new SignUpRequestDto("pashka", "password", 25));
         String responseJson = mockMvc.perform(get("/users/{id}", createdUser.getId()))
