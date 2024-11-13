@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import ru.pas_zhukov.eventmanager.exception.CustomAccessDeniedHandler;
+import ru.pas_zhukov.eventmanager.exception.CustomAuthenticationEntryPoint;
 
 @Configuration
 @EnableMethodSecurity
@@ -24,6 +26,10 @@ public class SecurityConfiguration {
     private JwtTokenFilter jwtTokenFilter;
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
 
     @Bean
@@ -49,6 +55,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/users/auth")
                         .permitAll()
                         .anyRequest().authenticated())
+                .exceptionHandling(exception -> exception
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler))
                 .addFilterBefore(jwtTokenFilter, AnonymousAuthenticationFilter.class)
                 .build();
     }
