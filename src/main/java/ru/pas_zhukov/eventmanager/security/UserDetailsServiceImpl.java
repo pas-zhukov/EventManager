@@ -1,10 +1,13 @@
 package ru.pas_zhukov.eventmanager.security;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.model.User;
+import ru.pas_zhukov.eventmanager.repository.UserRepository;
 import ru.pas_zhukov.eventmanager.service.UserService;
 
 /**
@@ -14,10 +17,10 @@ import ru.pas_zhukov.eventmanager.service.UserService;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserService userService) {
-        this.userService = userService;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     /**
@@ -29,7 +32,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getUserByLogin(username);
+        UserEntity user = userRepository.findByLogin(username).orElseThrow(() ->
+                new EntityNotFoundException("User with login %s not found".formatted(username)));
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getLogin())
                 .password(user.getPasswordHash())

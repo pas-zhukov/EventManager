@@ -25,6 +25,7 @@ public class UserService {
     public User registerUser(SignUpRequestDto signUpRequestDto) {
         User user = userConverter.toDomain(signUpRequestDto);
         user.setPasswordHash(passwordEncoder.encode(signUpRequestDto.getPassword()));
+        user.setRole(UserRole.USER);
         UserEntity createdUser = userRepository.save(userConverter.toEntity(user));
         return userConverter.toDomain(createdUser);
     }

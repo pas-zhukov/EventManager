@@ -1,5 +1,6 @@
 package ru.pas_zhukov.eventmanager.security;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +11,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.model.User;
+import ru.pas_zhukov.eventmanager.repository.UserRepository;
 import ru.pas_zhukov.eventmanager.service.UserService;
 
 import java.io.IOException;
@@ -23,11 +26,13 @@ import java.util.List;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenManager jwtTokenManager;
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final UserConverter userConverter;
 
-    public JwtTokenFilter(JwtTokenManager jwtTokenManager, UserService userService) {
+    public JwtTokenFilter(JwtTokenManager jwtTokenManager, UserRepository userRepository, UserConverter userConverter) {
         this.jwtTokenManager = jwtTokenManager;
-        this.userService = userService;
+        this.userRepository = userRepository;
+        this.userConverter = userConverter;
     }
 
     /**
@@ -57,8 +62,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        User user = userService.getUserByLogin(loginFromToken);
+        User user = userConverter.toDomain(userRepository.findByLogin(loginFromToken).orElseThrow(() ->
+                new EntityNotFoundException("User with login %s not found".formatted(loginFromToken))));
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 user,
                 null,

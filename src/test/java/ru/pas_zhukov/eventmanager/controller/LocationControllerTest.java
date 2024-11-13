@@ -10,6 +10,7 @@ import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.service.LocationService;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,6 +24,7 @@ public class LocationControllerTest extends TestInContainer {
     private LocationConverter locationConverter;
 
     @Test
+    @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     public void shouldSuccessOnCreateLocation() throws Exception {
         LocationRequestDto locationRequestDto = new LocationRequestDto(null,
                 "Hermitage",
@@ -46,6 +48,7 @@ public class LocationControllerTest extends TestInContainer {
     }
 
     @Test
+    @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     public void shouldNotCreateLocationOnInvalidRequest() throws Exception {
         LocationRequestDto locationRequestDto = new LocationRequestDto(10L,
                 "",
@@ -58,6 +61,7 @@ public class LocationControllerTest extends TestInContainer {
     }
 
     @Test
+    @WithMockUser(username = "testuser", roles = {"USER"})
     public void successOnGetLocationById() throws Exception {
         LocationRequestDto locationRequestDto = new LocationRequestDto(null,
                 "Hermitage",
@@ -78,12 +82,14 @@ public class LocationControllerTest extends TestInContainer {
     }
 
     @Test
+    @WithMockUser(username = "testuser", roles = {"USER"})
     public void shouldReturnNotFoundOnGetLocationByNotExistingId() throws Exception {
         mockMvc.perform(get("/locations/{id}", Long.MAX_VALUE))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
 
     @Test
+    @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     public void shouldSuccessOnUpdateLocation() throws Exception {
         Location sourceLocation = new Location(null,
                 "Hermitage",
@@ -114,6 +120,7 @@ public class LocationControllerTest extends TestInContainer {
     }
 
     @Test
+    @WithMockUser(username = "testadmin", roles = {"ADMIN"})
     public void shouldSuccessOnDeleteLocation() throws Exception {
         Location sourceLocation = new Location(null,
                 "Hermitage",
