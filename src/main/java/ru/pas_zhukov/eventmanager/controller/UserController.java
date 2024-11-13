@@ -30,15 +30,13 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponseDto> signUpUser(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
         User user = userService.registerUser(signUpRequestDto);
-        return ResponseEntity.ok(userConverter.toResponseDto(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userConverter.toResponseDto(user));
     }
 
     @PostMapping("/auth")
     public ResponseEntity<JwtResponseDto> authenticate(@Valid @RequestBody SignInRequestDto signInDto) {
-        var token = authenticationService.authenticateUser(signInDto);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new JwtResponseDto(token));
+        String token = authenticationService.authenticateUser(signInDto);
+        return ResponseEntity.ok(new JwtResponseDto(token));
     }
 
     @GetMapping("/{id}")
