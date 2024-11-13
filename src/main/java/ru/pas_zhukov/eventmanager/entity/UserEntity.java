@@ -11,7 +11,7 @@ public class UserEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "login", nullable = false)
+    @Column(name = "login", nullable = false, unique = true)
     private String login;
 
     @Column(name = "passwordHash")

@@ -1,6 +1,7 @@
 package ru.pas_zhukov.eventmanager.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
@@ -9,6 +10,7 @@ import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.JwtResponseDto;
 import ru.pas_zhukov.eventmanager.dto.response.UserResponseDto;
 import ru.pas_zhukov.eventmanager.model.User;
+import ru.pas_zhukov.eventmanager.security.AuthenticationService;
 import ru.pas_zhukov.eventmanager.service.UserService;
 
 @RestController
@@ -17,10 +19,12 @@ public class UserController {
 
     private final UserService userService;
     private final UserConverter userConverter;
+    private final AuthenticationService authenticationService;
 
-    public UserController(UserService userService, UserConverter userConverter) {
+    public UserController(UserService userService, UserConverter userConverter, AuthenticationService authenticationService) {
         this.userService = userService;
         this.userConverter = userConverter;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping
@@ -31,7 +35,10 @@ public class UserController {
 
     @PostMapping("/auth")
     public ResponseEntity<JwtResponseDto> authenticate(@Valid @RequestBody SignInRequestDto signInDto) {
-        return null;
+        var token = authenticationService.authenticateUser(signInDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new JwtResponseDto(token));
     }
 
     @GetMapping("/{id}")

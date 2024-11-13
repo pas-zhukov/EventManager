@@ -1,6 +1,7 @@
 package ru.pas_zhukov.eventmanager.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
@@ -13,21 +14,18 @@ import ru.pas_zhukov.eventmanager.repository.UserRepository;
 public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserConverter userConverter) {
+    public UserService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(SignUpRequestDto signUpRequestDto) {
-        //
-        User user = new User();
-        user.setLogin(signUpRequestDto.getLogin());
-        user.setPasswordHash(signUpRequestDto.getPassword());
-        user.setAge(signUpRequestDto.getAge());
-        user.setRole(UserRole.USER);
+        User user = userConverter.toDomain(signUpRequestDto);
+        user.setPasswordHash(passwordEncoder.encode(signUpRequestDto.getPassword()));
         UserEntity createdUser = userRepository.save(userConverter.toEntity(user));
-        //
         return userConverter.toDomain(createdUser);
     }
 
@@ -35,4 +33,10 @@ public class UserService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id %s not found".formatted(id)));
         return userConverter.toDomain(userEntity);
     }
+
+    public User getUserByLogin(String login) {
+        UserEntity foundUser = userRepository.findByLogin(login).orElseThrow(() -> new EntityNotFoundException("User with login %s not found".formatted(login)));
+        return userConverter.toDomain(foundUser);
+    }
+
 }
