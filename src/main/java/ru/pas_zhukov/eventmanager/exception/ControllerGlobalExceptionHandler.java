@@ -24,7 +24,7 @@ public class ControllerGlobalExceptionHandler {
 
         String detailedMessage = e.getMessage();
         ServerErrorDto serverErrorDto = new ServerErrorDto(
-                "Duplicated field exception",
+                "Validation error",
                 detailedMessage,
                 LocalDateTime.now()
         );

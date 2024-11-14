@@ -3,6 +3,7 @@ package ru.pas_zhukov.eventmanager.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import ru.pas_zhukov.eventmanager.TestInContainer;
@@ -81,10 +82,13 @@ public class UserControllerTest extends TestInContainer {
                 .getContentAsString();
         System.out.println(responseJson);
         ServerErrorDto serverErrorDto = jacksonObjectMapper.readValue(responseJson, ServerErrorDto.class);
+        Assertions.assertEquals("Validation error", serverErrorDto.message());
     }
 
     @Test
-    public void shouldReturnNotFoundOnGetUserById() throws Exception {
-
+    @WithMockUser(username = "testadmin", authorities = {"ADMIN"})
+    public void shouldReturnNotFoundOnGetNonExistingUserById() throws Exception {
+        mockMvc.perform(get("/users/{id}", Long.MAX_VALUE))
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
 }
