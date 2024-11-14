@@ -9,6 +9,7 @@ import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.UserResponseDto;
+import ru.pas_zhukov.eventmanager.exception.ServerErrorDto;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 import ru.pas_zhukov.eventmanager.service.UserService;
@@ -54,5 +55,36 @@ public class UserControllerTest extends TestInContainer {
         UserResponseDto gotUser = jacksonObjectMapper.readValue(responseJson, UserResponseDto.class);
 
         org.assertj.core.api.Assertions.assertThat(userConverter.toResponseDto(createdUser)).usingRecursiveComparison().isEqualTo(gotUser);
+    }
+
+    @Test
+    public void shouldNotCreateUserOnInvalidRequest() throws Exception {
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("pas", "", null);
+        String signUpJson = jacksonObjectMapper.writeValueAsString(signUpRequestDto);
+        String responseJson = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(signUpJson))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        ServerErrorDto serverErrorDto = jacksonObjectMapper.readValue(responseJson, ServerErrorDto.class);
+        Assertions.assertEquals("Validation error", serverErrorDto.message());
+    }
+
+    @Test
+    public void shouldNotCreateUserWithDuplicateLogin() throws Exception {
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("pashok", "password", 25);
+        String signUpJson = jacksonObjectMapper.writeValueAsString(signUpRequestDto);
+        String responseJson = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(signUpJson))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        System.out.println(responseJson);
+        ServerErrorDto serverErrorDto = jacksonObjectMapper.readValue(responseJson, ServerErrorDto.class);
+    }
+
+    @Test
+    public void shouldReturnNotFoundOnGetUserById() throws Exception {
+
     }
 }

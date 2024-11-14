@@ -1,6 +1,8 @@
 package ru.pas_zhukov.eventmanager.service;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
@@ -23,6 +25,9 @@ public class UserService {
     }
 
     public User registerUser(SignUpRequestDto signUpRequestDto) {
+        if (userRepository.existsByLogin(signUpRequestDto.getLogin())) {
+            throw new DuplicateKeyException("Login already taken");
+        }
         User user = userConverter.toDomain(signUpRequestDto);
         user.setPasswordHash(passwordEncoder.encode(signUpRequestDto.getPassword()));
         user.setRole(UserRole.USER);

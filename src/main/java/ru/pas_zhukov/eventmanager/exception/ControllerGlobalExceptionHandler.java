@@ -3,6 +3,7 @@ package ru.pas_zhukov.eventmanager.exception;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,6 +18,18 @@ import java.util.stream.Collectors;
 public class ControllerGlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(ControllerGlobalExceptionHandler.class);
 
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<ServerErrorDto> handleDuplicateKeyException(DuplicateKeyException e) {
+        log.error(e.getMessage());
+
+        String detailedMessage = e.getMessage();
+        ServerErrorDto serverErrorDto = new ServerErrorDto(
+                "Duplicated field exception",
+                detailedMessage,
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serverErrorDto);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ServerErrorDto> handleValidationException(
@@ -31,7 +44,7 @@ public class ControllerGlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         ServerErrorDto errorDto = new ServerErrorDto(
-                "Ошибка валидации запроса",
+                "Validation error",
                 detailedMessage,
                 LocalDateTime.now()
         );
@@ -63,7 +76,7 @@ public class ControllerGlobalExceptionHandler {
     ) {
         log.error("Got exception", e);
         ServerErrorDto errorDto = new ServerErrorDto(
-                "Сущность не найдена",
+                "Entity not found",
                 e.getMessage(),
                 LocalDateTime.now()
         );
