@@ -22,7 +22,7 @@ public class TestInContainer {
     protected ObjectMapper jacksonObjectMapper;
 
 
-    public static PostgreSQLContainer<?> POSTGRES_CONTAINER =
+    public static final PostgreSQLContainer<?> POSTGRES_CONTAINER =
             new PostgreSQLContainer<>("postgres:15.3")
                     .withDatabaseName("postgres")
                     .withUsername("postgres")

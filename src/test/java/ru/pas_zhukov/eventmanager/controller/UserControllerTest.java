@@ -5,21 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import ru.pas_zhukov.eventmanager.TestInContainer;
-import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
-import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.UserResponseDto;
-import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 import ru.pas_zhukov.eventmanager.service.UserService;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends TestInContainer {

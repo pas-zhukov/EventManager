@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
-import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 

@@ -22,15 +22,21 @@ import ru.pas_zhukov.eventmanager.exception.CustomAuthenticationEntryPoint;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    @Autowired
-    private JwtTokenFilter jwtTokenFilter;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
-    @Autowired
-    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    private final JwtTokenFilter jwtTokenFilter;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    public SecurityConfiguration(JwtTokenFilter jwtTokenFilter,
+                                 UserDetailsServiceImpl userDetailsServiceImpl,
+                                 CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+                                 CustomAccessDeniedHandler customAccessDeniedHandler) {
+        this.jwtTokenFilter = jwtTokenFilter;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -6,9 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.entity.UserEntity;
-import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.repository.UserRepository;
-import ru.pas_zhukov.eventmanager.service.UserService;
 
 /**
  * Сервис для использования в качестве {@link UserDetailsService}

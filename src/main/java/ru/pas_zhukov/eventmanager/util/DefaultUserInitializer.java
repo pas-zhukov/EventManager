@@ -7,7 +7,6 @@ import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 import ru.pas_zhukov.eventmanager.repository.UserRepository;
-import ru.pas_zhukov.eventmanager.service.UserService;
 
 @Component
 public class DefaultUserInitializer {

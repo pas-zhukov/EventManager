@@ -1,6 +1,5 @@
 package ru.pas_zhukov.eventmanager.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
 import ru.pas_zhukov.eventmanager.dto.request.SignInRequestDto;
 import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.JwtResponseDto;
-import ru.pas_zhukov.eventmanager.dto.response.UserResponseDto;
 import ru.pas_zhukov.eventmanager.exception.ServerErrorDto;
 import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.service.LocationService;

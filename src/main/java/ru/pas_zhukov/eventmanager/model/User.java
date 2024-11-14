@@ -1,8 +1,6 @@
 package ru.pas_zhukov.eventmanager.model;
 
 
-import jakarta.persistence.*;
-
 import java.util.Objects;
 
 
