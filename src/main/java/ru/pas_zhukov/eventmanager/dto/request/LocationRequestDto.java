@@ -20,7 +20,8 @@ public class LocationRequestDto {
 
     private String description;
 
-    public LocationRequestDto() {}
+    public LocationRequestDto() {
+    }
 
     public LocationRequestDto(Long id, String name, String address, Integer capacity, String description) {
         this.id = id;

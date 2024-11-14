@@ -25,6 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * Получает юзера из БД по логину,
      * затем возвращает {@code UserDetails}
      * с полными данными пользователя (логин, хеш пароля, роль)
+     *
      * @param username логин юзера
      * @return {@link UserDetails} с данными юзера
      */

@@ -36,16 +36,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     /**
      * Порядок работы фильтра:
-     *  <p>1. Проверка на наличие заголовка авторизации, и что он начинается с "Bearer "</p>
-     *  <p>2. Расшифровка токена и получение из него логина</p>
-     *  <p>3. Получение пользователя по логину и аутентификация в случае, если пользователь найден.</p>
-     *  <p>4. Сохранение аутентификации пользователя в контексте секьюрити.</p>
+     * <p>1. Проверка на наличие заголовка авторизации, и что он начинается с "Bearer "</p>
+     * <p>2. Расшифровка токена и получение из него логина</p>
+     * <p>3. Получение пользователя по логину и аутентификация в случае, если пользователь найден.</p>
+     * <p>4. Сохранение аутентификации пользователя в контексте секьюрити.</p>
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException
-    {
+                                    FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);

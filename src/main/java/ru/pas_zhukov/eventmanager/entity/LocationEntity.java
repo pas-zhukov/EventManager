@@ -22,7 +22,8 @@ public class LocationEntity {
     @Column(name = "description")
     private String description;
 
-    public LocationEntity() {}
+    public LocationEntity() {
+    }
 
     public LocationEntity(Long id, String name, String address, Integer capacity, String description) {
         this.id = id;

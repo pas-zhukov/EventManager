@@ -61,8 +61,8 @@ public class SecurityConfiguration {
                         .permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
-                                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                                .accessDeniedHandler(customAccessDeniedHandler))
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler))
                 .addFilterBefore(jwtTokenFilter, AnonymousAuthenticationFilter.class)
                 .build();
     }
