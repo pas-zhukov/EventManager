@@ -6,11 +6,13 @@ import ru.pas_zhukov.eventmanager.dto.response.LocationResponseDto;
 import ru.pas_zhukov.eventmanager.entity.LocationEntity;
 import ru.pas_zhukov.eventmanager.model.Location;
 
+import java.util.ArrayList;
+
 @Component
 public class LocationConverter {
 
     public LocationEntity toEntity(Location location) {
-        return new LocationEntity(location.getId(), location.getName(), location.getAddress(), location.getCapacity(), location.getDescription());
+        return new LocationEntity(location.getId(), location.getName(), location.getAddress(), location.getCapacity(), location.getDescription(), new ArrayList<>());
     }
 
     public Location toDomain(LocationEntity locationEntity) {
