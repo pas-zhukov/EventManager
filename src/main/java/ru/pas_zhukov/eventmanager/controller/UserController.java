@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<UserResponseDto> getOne(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> getOne(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userConverter.toResponseDto(userService.getUserById(id)));
     }
 }
