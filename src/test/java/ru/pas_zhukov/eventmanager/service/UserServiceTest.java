@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.dto.request.SignUpRequestDto;
+import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.model.User;
+import ru.pas_zhukov.eventmanager.model.UserRole;
 
 public class UserServiceTest extends TestInContainer {
 
@@ -32,5 +34,14 @@ public class UserServiceTest extends TestInContainer {
         User userFromDB = userService.getUserByLogin(userToCreate.getLogin());
 
         Assertions.assertEquals(createdUser, userFromDB);
+    }
+
+    @Test
+    public void checkDefaultUsersAreCreated() {
+        User user = userService.getUserByLogin("user");
+        User admin = userService.getUserByLogin("admin");
+
+        Assertions.assertEquals(UserRole.USER, user.getRole());
+        Assertions.assertEquals(UserRole.ADMIN, admin.getRole());
     }
 }

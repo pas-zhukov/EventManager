@@ -31,7 +31,7 @@ public class UserControllerTest extends TestInContainer {
 
     @Test
     public void shouldSuccessOnRegisterUser() throws Exception {
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("pasha", "password", 25);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("pashok", "password", 25);
         String signUpJson = jacksonObjectMapper.writeValueAsString(signUpRequestDto);
         String responseJson = mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(signUpJson))
                 .andExpect(status().isCreated())
