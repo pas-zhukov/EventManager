@@ -1,6 +1,8 @@
 package ru.pas_zhukov.eventmanager.util;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
@@ -21,7 +23,7 @@ public class DefaultUserInitializer {
         this.userConverter = userConverter;
     }
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     public void initUsers() {
         createUserIfNotExists("admin", "admin", UserRole.ADMIN);
         createUserIfNotExists("user", "user", UserRole.USER);
