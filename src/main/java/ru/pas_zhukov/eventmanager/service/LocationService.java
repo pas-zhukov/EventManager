@@ -21,7 +21,7 @@ public class LocationService {
     }
 
     public Location createLocation(Location location) {
-        LocationEntity createdLocation =  locationRepository.save(locationConverter.toEntity(location));
+        LocationEntity createdLocation = locationRepository.save(locationConverter.toEntity(location));
         return locationConverter.toDomain(createdLocation);
     }
 

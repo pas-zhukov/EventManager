@@ -8,7 +8,8 @@ public class LocationResponseDto {
     private Integer capacity;
     private String description;
 
-    public LocationResponseDto() {}
+    public LocationResponseDto() {
+    }
 
     public LocationResponseDto(Long id, String name, String address, Integer capacity, String description) {
         this.id = id;

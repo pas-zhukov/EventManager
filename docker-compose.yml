@@ -1,6 +1,6 @@
 services:
   database:
-    container_name: "postgres-db"
+    container_name: "em-postgres-db"
     image: postgres:15.3
     restart: always
     environment:

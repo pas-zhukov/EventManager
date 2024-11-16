@@ -30,7 +30,7 @@ public class LocationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LocationResponseDto> getOne(@PathVariable Long id) {
+    public ResponseEntity<LocationResponseDto> getOne(@PathVariable("id") Long id) {
         return ResponseEntity.ok(locationConverter.toResponseDto(locationService.getLocationById(id)));
     }
 
@@ -40,13 +40,13 @@ public class LocationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LocationResponseDto> updateOne(@PathVariable Long id, @RequestBody @Valid LocationRequestDto locationToUpdate) {
+    public ResponseEntity<LocationResponseDto> updateOne(@PathVariable("id") Long id, @RequestBody @Valid LocationRequestDto locationToUpdate) {
         LocationResponseDto updatedLocation = locationConverter.toResponseDto(locationService.updateLocation(id, locationConverter.toDomain(locationToUpdate)));
         return ResponseEntity.ok(updatedLocation);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<LocationResponseDto> deleteOne(@PathVariable Long id) {
+    public ResponseEntity<LocationResponseDto> deleteOne(@PathVariable("id") Long id) {
         LocationResponseDto deletedLocation = locationConverter.toResponseDto(locationService.deleteLocation(id));
         return ResponseEntity.ok(deletedLocation);
     }
