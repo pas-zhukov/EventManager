@@ -68,31 +68,31 @@ public class EventControllerTest extends TestInContainer {
     }
 
     public void shouldNotCreateEventOnInvalidRequest() {
-
+        throw new RuntimeException();
     }
 
     public void shouldSuccessDeleteEvent() {
-
+        throw new RuntimeException();
     }
 
     public void shouldNotDeleteEventWhenRequestIsNotFromOwnerOrAdmin() {
-
+        throw new RuntimeException();
     }
 
     public void shouldSuccessOnGetEventById() {
-
+        throw new RuntimeException();
     }
 
     public void shouldReturnNotFoundOnGetNonExistingEventById() {
-
+        throw new RuntimeException();
     }
 
     public void shouldSuccessOnUpdateEvent() {
-
+        throw new RuntimeException();
     }
 
     public void shouldNotUpdateEventOnInvalidRequest() {
-
+        throw new RuntimeException();
     }
 
 
