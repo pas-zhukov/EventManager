@@ -7,6 +7,7 @@ import ru.pas_zhukov.eventmanager.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "events")
@@ -29,7 +30,7 @@ public class EventEntity {
     private Integer occupiedPlaces;
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private Date date;
 
     @Column(name = "cost", nullable = false)
     private BigDecimal cost;
@@ -47,7 +48,7 @@ public class EventEntity {
     public EventEntity() {
     }
 
-    public EventEntity(Long id, String name, UserEntity owner, Integer maxPlaces, Integer occupiedPlaces, LocalDateTime date, BigDecimal cost, Integer duration, LocationEntity location, EventStatus status) {
+    public EventEntity(Long id, String name, UserEntity owner, Integer maxPlaces, Integer occupiedPlaces, Date date, BigDecimal cost, Integer duration, LocationEntity location, EventStatus status) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -100,11 +101,11 @@ public class EventEntity {
         this.occupiedPlaces = occupiedPlaces;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

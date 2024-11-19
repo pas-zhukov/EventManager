@@ -1,36 +1,38 @@
 package ru.pas_zhukov.eventmanager.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ru.pas_zhukov.eventmanager.model.EventStatus;
 import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.model.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class EventResponseDto {
     private Long id;
     private String name;
-    private User owner;
+    private Long ownerId;
     private Integer maxPlaces;
     private Integer occupiedPlaces;
-    private LocalDateTime date;
+    private Date date;
     private BigDecimal cost;
     private Integer duration;
-    private Location location;
+    private Long locationId;
     private EventStatus status;
 
     public EventResponseDto() {}
 
-    public EventResponseDto(Long id, String name, User owner, Integer maxPlaces, Integer occupiedPlaces, LocalDateTime date, BigDecimal cost, Integer duration, Location location, EventStatus status) {
+    public EventResponseDto(Long id, String name, Long ownerId, Integer maxPlaces, Integer occupiedPlaces, Date date, BigDecimal cost, Integer duration, Long locationId, EventStatus status) {
         this.id = id;
         this.name = name;
-        this.owner = owner;
+        this.ownerId = ownerId;
         this.maxPlaces = maxPlaces;
         this.occupiedPlaces = occupiedPlaces;
         this.date = date;
         this.cost = cost;
         this.duration = duration;
-        this.location = location;
+        this.locationId = locationId;
         this.status = status;
     }
 
@@ -50,12 +52,20 @@ public class EventResponseDto {
         this.name = name;
     }
 
-    public User getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public Integer getMaxPlaces() {
@@ -74,11 +84,11 @@ public class EventResponseDto {
         this.occupiedPlaces = occupiedPlaces;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -96,14 +106,6 @@ public class EventResponseDto {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public EventStatus getStatus() {
