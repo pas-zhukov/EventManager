@@ -11,20 +11,17 @@ import java.util.List;
 @RequestMapping("events/registrations")
 public class EventRegistrationController {
 
-    @PostMapping
-    @RequestMapping("/{eventId}")
+    @PostMapping("/{eventId}")
     public ResponseEntity<HttpStatus> registerUserOnEvent(@PathVariable("eventId") Long eventId) {
         return null;
     }
 
-    @DeleteMapping
-    @RequestMapping("/cancel/{eventId}")
+    @DeleteMapping("/cancel/{eventId}")
     public ResponseEntity<HttpStatus> cancelUserRegistrationOnEvent(@PathVariable("eventId") Long eventId) {
         return null;
     }
 
-    @GetMapping
-    @RequestMapping("/my")
+    @GetMapping("/my")
     public ResponseEntity<List<EventResponseDto>> getUserRegistrationsEvents() {
         return null;
     }

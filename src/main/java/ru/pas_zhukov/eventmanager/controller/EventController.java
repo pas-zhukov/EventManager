@@ -30,32 +30,27 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.CREATED).body(eventConverter.toResponseDto(eventService.createEvent(eventConverter.toDomain(eventCreateRequestDto))));
     }
 
-    @GetMapping
-    @RequestMapping("/{eventId}")
+    @GetMapping("/{eventId}")
     public ResponseEntity<EventResponseDto> getEvent(@PathVariable("eventId") Long eventId) {
         return null;
     }
 
-    @DeleteMapping
-    @RequestMapping("/{eventId}")
+    @DeleteMapping("/{eventId}")
     public ResponseEntity<HttpStatus> deleteEvent(@PathVariable("eventId") Long eventId) {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    @RequestMapping("/{eventId}")
+    @PutMapping("/{eventId}")
     public ResponseEntity<EventResponseDto> updateEvent(@PathVariable("eventId") Long eventId, @Valid @RequestBody EventUpdateRequestDto eventUpdateRequestDto) {
         return null;
     }
 
-    @PostMapping
-    @RequestMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<List<EventResponseDto>> searchEvents(@Valid @RequestBody EventSearchRequestDto eventSearchRequestDto) {
         return null;
     }
 
-    @GetMapping
-    @RequestMapping("/my")
+    @GetMapping("/my")
     public ResponseEntity<List<EventResponseDto>> getUserEvents() {
         return null;
     }

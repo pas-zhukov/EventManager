@@ -67,30 +67,37 @@ public class EventControllerTest extends TestInContainer {
         Assertions.assertEquals(eventToCreate.getLocationId(), createdEventDto.getLocationId());
     }
 
+    @Test
     public void shouldNotCreateEventOnInvalidRequest() {
         throw new RuntimeException();
     }
 
+    @Test
     public void shouldSuccessDeleteEvent() {
         throw new RuntimeException();
     }
 
+    @Test
     public void shouldNotDeleteEventWhenRequestIsNotFromOwnerOrAdmin() {
         throw new RuntimeException();
     }
 
+    @Test
     public void shouldSuccessOnGetEventById() {
         throw new RuntimeException();
     }
 
+    @Test
     public void shouldReturnNotFoundOnGetNonExistingEventById() {
         throw new RuntimeException();
     }
 
+    @Test
     public void shouldSuccessOnUpdateEvent() {
         throw new RuntimeException();
     }
 
+    @Test
     public void shouldNotUpdateEventOnInvalidRequest() {
         throw new RuntimeException();
     }
