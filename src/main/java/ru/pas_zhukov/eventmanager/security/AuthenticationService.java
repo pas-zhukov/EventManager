@@ -3,9 +3,9 @@ package ru.pas_zhukov.eventmanager.security;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import ru.pas_zhukov.eventmanager.dto.request.SignInRequestDto;
-import ru.pas_zhukov.eventmanager.model.User;
 
 @Service
 public class AuthenticationService {

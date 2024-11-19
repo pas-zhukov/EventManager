@@ -6,6 +6,8 @@ import ru.pas_zhukov.eventmanager.dto.response.UserResponseDto;
 import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.model.User;
 
+import java.util.ArrayList;
+
 @Component
 public class UserConverter {
 
@@ -14,7 +16,7 @@ public class UserConverter {
     }
 
     public UserEntity toEntity(User user) {
-        return new UserEntity(user.getId(), user.getLogin(), user.getPasswordHash(), user.getAge(), user.getRole());
+        return new UserEntity(user.getId(), user.getLogin(), user.getPasswordHash(), user.getAge(), user.getRole(), new ArrayList<>());
     }
 
     public User toDomain(UserEntity userEntity) {
