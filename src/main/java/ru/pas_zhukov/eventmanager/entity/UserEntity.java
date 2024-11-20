@@ -29,18 +29,22 @@ public class UserEntity {
     private UserRole role;
 
     @OneToMany(mappedBy = "owner", orphanRemoval = true)
-    private List<EventEntity> ownedEvents = new ArrayList<>();
+    private List<EventEntity> ownedEvents;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<RegistrationEntity> registrations;
 
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String login, String passwordHash, Integer age, UserRole role, List<EventEntity> ownedEvents) {
+    public UserEntity(Long id, String login, String passwordHash, Integer age, UserRole role, List<EventEntity> ownedEvents, List<RegistrationEntity> registrations) {
         this.id = id;
         this.login = login;
         this.passwordHash = passwordHash;
         this.age = age;
         this.role = role;
         this.ownedEvents = ownedEvents;
+        this.registrations = registrations;
     }
 
     public Long getId() {
@@ -89,5 +93,13 @@ public class UserEntity {
 
     public void setOwnedEvents(List<EventEntity> ownedEvents) {
         this.ownedEvents = ownedEvents;
+    }
+
+    public List<RegistrationEntity> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<RegistrationEntity> registrations) {
+        this.registrations = registrations;
     }
 }

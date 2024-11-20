@@ -8,6 +8,7 @@ import ru.pas_zhukov.eventmanager.model.User;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -45,10 +46,13 @@ public class EventEntity {
     @Column(name = "status", nullable = false)
     private EventStatus status;
 
+    @OneToMany(mappedBy = "event", orphanRemoval = true)
+    private List<RegistrationEntity> registrations;
+
     public EventEntity() {
     }
 
-    public EventEntity(Long id, String name, UserEntity owner, Integer maxPlaces, Integer occupiedPlaces, Date date, BigDecimal cost, Integer duration, LocationEntity location, EventStatus status) {
+    public EventEntity(Long id, String name, UserEntity owner, Integer maxPlaces, Integer occupiedPlaces, Date date, BigDecimal cost, Integer duration, LocationEntity location, EventStatus status, List<RegistrationEntity> registrations) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -59,6 +63,7 @@ public class EventEntity {
         this.duration = duration;
         this.location = location;
         this.status = status;
+        this.registrations = registrations;
     }
 
     public Long getId() {
@@ -139,5 +144,13 @@ public class EventEntity {
 
     public void setStatus(EventStatus status) {
         this.status = status;
+    }
+
+    public List<RegistrationEntity> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<RegistrationEntity> registrations) {
+        this.registrations = registrations;
     }
 }
