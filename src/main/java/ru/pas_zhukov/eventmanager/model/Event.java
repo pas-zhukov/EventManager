@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Event {
+public class Event implements Cloneable{
     private Long id;
     private String name;
     private User owner;
@@ -110,5 +110,19 @@ public class Event {
 
     public void setStatus(EventStatus status) {
         this.status = status;
+    }
+
+    public Event mergeEvent(Event eventToMerge) {
+        setId(eventToMerge.getId() != null ? eventToMerge.getId() : getId());
+        setName(eventToMerge.getName() != null ? eventToMerge.getName() : getName());
+        setOwner(eventToMerge.getOwner() != null ? eventToMerge.getOwner() : getOwner());
+        setMaxPlaces(eventToMerge.getMaxPlaces() != null ? eventToMerge.getMaxPlaces() : getMaxPlaces());
+        setOccupiedPlaces(eventToMerge.getOccupiedPlaces() != null ? eventToMerge.getOccupiedPlaces() : getOccupiedPlaces());
+        setDate(eventToMerge.getDate() != null ? eventToMerge.getDate() : getDate());
+        setCost(eventToMerge.getCost() != null ? eventToMerge.getCost() : getCost());
+        setDuration(eventToMerge.getDuration() != null ? eventToMerge.getDuration() : getDuration());
+        setLocation(eventToMerge.getLocation() != null ? eventToMerge.getLocation() : getLocation());
+        setStatus(eventToMerge.getStatus() != null ? eventToMerge.getStatus() : getStatus());
+        return this;
     }
 }

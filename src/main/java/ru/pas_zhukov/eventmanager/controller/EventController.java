@@ -27,7 +27,9 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventCreateRequestDto eventCreateRequestDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(eventConverter.toResponseDto(eventService.createEvent(eventConverter.toDomain(eventCreateRequestDto))));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(eventConverter.toResponseDto(eventService.createEvent(eventConverter.toDomain(eventCreateRequestDto))));
     }
 
     @GetMapping("/{eventId}")
