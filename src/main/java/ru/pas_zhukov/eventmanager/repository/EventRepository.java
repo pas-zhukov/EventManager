@@ -17,22 +17,24 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
     List<EventEntity> findAllByOwnerIs(UserEntity owner);
 
+    List<EventEntity> findAllByIdIsIn(List<Long> ids);
+
     void removeEventEntityById(Long id);
 
     @Query("""
-SELECT e FROM EventEntity e
-WHERE (:name IS NULL OR e.name LIKE %:name%)
-AND (:placesMin IS NULL OR e.maxPlaces >= :placesMin)
-AND (:placesMax IS NULL OR e.maxPlaces <= :placesMax)
-AND (CAST(:dateStartAfter as date) IS NULL OR e.date >= :dateStartAfter)
-AND (CAST(:dateStartBefore as date) IS NULL OR e.date <= :dateStartBefore)
-AND (:costMin IS NULL OR e.cost >= :costMin)
-AND (:costMax IS NULL OR e.cost <= :costMax)
-AND (:durationMin IS NULL OR e.duration >= :durationMin)
-AND (:durationMax IS NULL OR e.duration <= :durationMax)
-AND (:locationId IS NULL OR e.location.id = :locationId)
-AND (:eventStatus IS NULL OR e.status = :eventStatus)
-""")
+    SELECT e FROM EventEntity e
+    WHERE (:name IS NULL OR e.name LIKE %:name%)
+    AND (:placesMin IS NULL OR e.maxPlaces >= :placesMin)
+    AND (:placesMax IS NULL OR e.maxPlaces <= :placesMax)
+    AND (CAST(:dateStartAfter as date) IS NULL OR e.date >= :dateStartAfter)
+    AND (CAST(:dateStartBefore as date) IS NULL OR e.date <= :dateStartBefore)
+    AND (:costMin IS NULL OR e.cost >= :costMin)
+    AND (:costMax IS NULL OR e.cost <= :costMax)
+    AND (:durationMin IS NULL OR e.duration >= :durationMin)
+    AND (:durationMax IS NULL OR e.duration <= :durationMax)
+    AND (:locationId IS NULL OR e.location.id = :locationId)
+    AND (:eventStatus IS NULL OR e.status = :eventStatus)
+    """)
     List<EventEntity> searchEvents(
             @Param("name") String name,
             @Param("placesMin") Integer placesMin,
