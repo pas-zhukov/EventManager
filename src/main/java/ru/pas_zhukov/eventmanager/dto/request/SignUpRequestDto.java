@@ -8,11 +8,11 @@ import jakarta.validation.constraints.Size;
 public class SignUpRequestDto {
 
     @NotBlank
-    @Size(min = 5, max = 20)
+    @Size(min = 3, max = 20)
     private String login;
 
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 3)
     private String password;
 
     @NotNull

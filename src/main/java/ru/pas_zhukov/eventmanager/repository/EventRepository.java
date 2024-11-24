@@ -1,6 +1,8 @@
 package ru.pas_zhukov.eventmanager.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -51,4 +53,8 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
     List<EventEntity> findAllByStatusIs(EventStatus status);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE EventEntity e SET e.status = :eventStatus WHERE e.id IN :ids")
+    void changeEventsStatus(@Param("ids") List<Long> ids, @Param("eventStatus") EventStatus eventStatus);
 }

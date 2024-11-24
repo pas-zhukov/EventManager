@@ -3,10 +3,11 @@ package ru.pas_zhukov.eventmanager.security;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.dto.request.SignInRequestDto;
+import ru.pas_zhukov.eventmanager.model.User;
 
 @Service
 public class AuthenticationService {
@@ -34,12 +35,12 @@ public class AuthenticationService {
         return jwtTokenManager.generateToken(signInRequest.getLogin());
     }
 
-    public ru.pas_zhukov.eventmanager.model.User getCurrentAuthenticatedUserOrThrow() {
+    public User getCurrentAuthenticatedUserOrThrow() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new IllegalStateException("Authentication not present");
         }
         User user = (User) authentication.getPrincipal();
-        return userConverter.toDomain(user);
+        return user;
     }
 }
