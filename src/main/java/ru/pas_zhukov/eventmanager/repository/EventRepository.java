@@ -48,4 +48,7 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
             @Param("locationId") Long locationId,
             @Param("eventStatus") EventStatus eventStatus
     );
+
+    List<EventEntity> findAllByStatusIs(EventStatus status);
+
 }
