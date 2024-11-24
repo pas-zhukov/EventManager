@@ -2,10 +2,13 @@ package ru.pas_zhukov.eventmanager.converter;
 
 import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.dto.request.EventCreateRequestDto;
+import ru.pas_zhukov.eventmanager.dto.request.EventUpdateRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.EventResponseDto;
 import ru.pas_zhukov.eventmanager.entity.EventEntity;
 import ru.pas_zhukov.eventmanager.model.Event;
 import ru.pas_zhukov.eventmanager.model.Location;
+
+import java.util.ArrayList;
 
 @Component
 public class EventConverter {
@@ -27,7 +30,8 @@ public class EventConverter {
                 event.getCost(),
                 event.getDuration(),
                 locationConverter.toEntity(event.getLocation()),
-                event.getStatus());
+                event.getStatus(),
+                new ArrayList<>());
     }
 
     public Event toDomain(EventEntity eventEntity) {
@@ -65,6 +69,19 @@ public class EventConverter {
         event.setDuration(eventCreateRequestDto.getDuration());
         Location location = new Location();
         location.setId(eventCreateRequestDto.getLocationId());
+        event.setLocation(location);
+        return event;
+    }
+
+    public Event toDomain(EventUpdateRequestDto eventUpdateRequestDto) {
+        Event event = new Event();
+        event.setName(eventUpdateRequestDto.getName());
+        event.setMaxPlaces(eventUpdateRequestDto.getMaxPlaces());
+        event.setDate(eventUpdateRequestDto.getDate());
+        event.setCost(eventUpdateRequestDto.getCost());
+        event.setDuration(eventUpdateRequestDto.getDuration());
+        Location location = new Location();
+        location.setId(eventUpdateRequestDto.getLocationId());
         event.setLocation(location);
         return event;
     }

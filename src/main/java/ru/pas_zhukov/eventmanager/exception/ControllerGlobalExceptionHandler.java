@@ -85,4 +85,8 @@ public class ControllerGlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(errorDto);
     }
+
+    // TODO
+    // IllegalStateException
+    // AccessDeniedException
 }
