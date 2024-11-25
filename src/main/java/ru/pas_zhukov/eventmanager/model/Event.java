@@ -1,10 +1,9 @@
 package ru.pas_zhukov.eventmanager.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Event implements Cloneable{
+public class Event {
     private Long id;
     private String name;
     private User owner;

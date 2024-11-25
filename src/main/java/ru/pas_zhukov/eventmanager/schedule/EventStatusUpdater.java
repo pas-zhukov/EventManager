@@ -9,7 +9,6 @@ import ru.pas_zhukov.eventmanager.entity.EventEntity;
 import ru.pas_zhukov.eventmanager.model.EventStatus;
 import ru.pas_zhukov.eventmanager.repository.EventRepository;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Component

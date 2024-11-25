@@ -2,11 +2,8 @@ package ru.pas_zhukov.eventmanager.entity;
 
 import jakarta.persistence.*;
 import ru.pas_zhukov.eventmanager.model.EventStatus;
-import ru.pas_zhukov.eventmanager.model.Location;
-import ru.pas_zhukov.eventmanager.model.User;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 

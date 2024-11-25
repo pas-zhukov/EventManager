@@ -3,10 +3,7 @@ package ru.pas_zhukov.eventmanager.entity;
 import jakarta.persistence.*;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")

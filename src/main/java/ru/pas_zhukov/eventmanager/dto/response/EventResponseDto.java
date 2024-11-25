@@ -1,12 +1,8 @@
 package ru.pas_zhukov.eventmanager.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import ru.pas_zhukov.eventmanager.model.EventStatus;
-import ru.pas_zhukov.eventmanager.model.Location;
-import ru.pas_zhukov.eventmanager.model.User;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class EventResponseDto {

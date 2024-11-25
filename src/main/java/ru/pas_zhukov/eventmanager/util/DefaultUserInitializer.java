@@ -1,6 +1,5 @@
 package ru.pas_zhukov.eventmanager.util;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
