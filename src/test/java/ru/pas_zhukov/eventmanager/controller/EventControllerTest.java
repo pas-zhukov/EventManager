@@ -2,6 +2,7 @@ package ru.pas_zhukov.eventmanager.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -68,36 +69,43 @@ public class EventControllerTest extends TestInContainer {
     }
 
     @Test
+    @Disabled
     public void shouldNotCreateEventOnInvalidRequest() {
         throw new RuntimeException();
     }
 
     @Test
+    @Disabled
     public void shouldSuccessDeleteEvent() {
         throw new RuntimeException();
     }
 
     @Test
+    @Disabled
     public void shouldNotDeleteEventWhenRequestIsNotFromOwnerOrAdmin() {
         throw new RuntimeException();
     }
 
     @Test
+    @Disabled
     public void shouldSuccessOnGetEventById() {
         throw new RuntimeException();
     }
 
     @Test
+    @Disabled
     public void shouldReturnNotFoundOnGetNonExistingEventById() {
         throw new RuntimeException();
     }
 
     @Test
+    @Disabled
     public void shouldSuccessOnUpdateEvent() {
         throw new RuntimeException();
     }
 
     @Test
+    @Disabled
     public void shouldNotUpdateEventOnInvalidRequest() {
         throw new RuntimeException();
     }

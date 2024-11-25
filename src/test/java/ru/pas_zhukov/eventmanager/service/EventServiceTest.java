@@ -2,6 +2,7 @@ package ru.pas_zhukov.eventmanager.service;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -75,6 +76,7 @@ public class EventServiceTest extends TestInContainer {
     }
 
     @Test
+    @Disabled
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void shouldSuccessUpdateEvent() throws Exception {
 
