@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -86,7 +87,25 @@ public class ControllerGlobalExceptionHandler {
                 .body(errorDto);
     }
 
-    // TODO
-    // IllegalStateException
-    // AccessDeniedException
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ServerErrorDto> handleAccessDeniedException(IllegalStateException e) {
+        log.error("Got exception", e);
+        ServerErrorDto errorDto = new ServerErrorDto(
+                "Bad request",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ServerErrorDto> handleAccessDeniedException(AccessDeniedException e) {
+        log.error("Got exception", e);
+        ServerErrorDto errorDto = new ServerErrorDto(
+                "Forbidden",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDto);
+    }
 }
