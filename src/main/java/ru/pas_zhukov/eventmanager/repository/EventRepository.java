@@ -1,6 +1,7 @@
 package ru.pas_zhukov.eventmanager.repository;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,14 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
     List<EventEntity> findAllByOwnerIs(UserEntity owner);
 
-    List<EventEntity> findAllByIdIsIn(List<Long> ids);
+    @Query("""
+    SELECT e from EventEntity e
+    JOIN FETCH UserEntity u ON e.owner = u
+    JOIN FETCH LocationEntity l ON e.location = l
+    INNER JOIN RegistrationEntity r ON r.event.id = e.id
+    WHERE r.user.id = :userId
+    """)
+    List<EventEntity> findUserRegisteredEvents(@Param("userId") Long userId);
 
     void removeEventEntityById(Long id);
 
@@ -67,9 +75,11 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
     void decreaseOccupiedPlacesByEventId(@Param("id") Long id);
 
     @Query("SELECT e FROM EventEntity e WHERE e.status = :status AND current_timestamp >= e.date AND current_timestamp < e.date + (e.duration MINUTE)")
+    @EntityGraph(attributePaths = {"owner", "registrations"})
     List<EventEntity> findAllStartedEventsByStatus(@Param("status") EventStatus status);
 
     @Query("SELECT e FROM EventEntity e WHERE e.status = :status AND current_timestamp >= e.date + (e.duration MINUTE)")
+    @EntityGraph(attributePaths = {"owner", "registrations"})
     List<EventEntity> findAllFinishedEventsByStatus(@Param("status") EventStatus status);
 
 }

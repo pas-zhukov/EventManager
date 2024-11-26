@@ -54,8 +54,7 @@ public class RegistrationService {
     }
 
     public List<Event> getUserRegisteredEvents(User user) {
-        List<RegistrationEntity> userRegistrations = registrationRepository.findAllByUserIs(userConverter.toEntity(user));
-        List<EventEntity> userRegisteredEvents = eventRepository.findAllByIdIsIn(userRegistrations.stream().mapToLong(e -> e.getEvent().getId()).boxed().toList());
+        List<EventEntity> userRegisteredEvents = eventRepository.findUserRegisteredEvents(user.getId());
         return userRegisteredEvents.stream().map(eventConverter::toDomain).toList();
     }
 

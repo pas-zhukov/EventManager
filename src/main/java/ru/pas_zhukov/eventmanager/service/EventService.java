@@ -34,6 +34,7 @@ public class EventService {
         validateEventLocationPlacesQuantity(eventToCreate);
         eventToCreate.setOwner(owner);
         eventToCreate.setStatus(EventStatus.WAIT_START);
+        eventToCreate.setOccupiedPlaces(0);
         EventEntity eventEntityToCreate = eventConverter.toEntity(eventToCreate);
         EventEntity createdEvent = eventRepository.save(eventEntityToCreate);
         return eventConverter.toDomain(createdEvent);

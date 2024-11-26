@@ -1,6 +1,7 @@
 package ru.pas_zhukov.eventmanager.model;
 
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -10,16 +11,24 @@ public class User {
     private String passwordHash;
     private Integer age;
     private UserRole role;
+    private List<Event> ownedEvents;
+    private List<Registration> registrations;
 
     public User() {
     }
 
-    public User(Long id, String login, String passwordHash, Integer age, UserRole role) {
+    public User(Long id, String login, String passwordHash, Integer age, UserRole role, List<Event> ownedEvents, List<Registration> registrations) {
         this.id = id;
         this.login = login;
         this.passwordHash = passwordHash;
         this.age = age;
         this.role = role;
+        this.ownedEvents = ownedEvents;
+        this.registrations = registrations;
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -60,6 +69,22 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public List<Event> getOwnedEvents() {
+        return ownedEvents;
+    }
+
+    public void setOwnedEvents(List<Event> ownedEvents) {
+        this.ownedEvents = ownedEvents;
+    }
+
+    public List<Registration> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Registration> registrations) {
+        this.registrations = registrations;
     }
 
     @Override

@@ -18,7 +18,7 @@ public class EventEntity {
     private String name;
 
     @JoinColumn(name = "owner_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity owner;
 
     @Column(name = "max_places", nullable = false)

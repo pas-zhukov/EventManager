@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,16 +26,16 @@ public class UserEntity {
     @Column(name = "role")
     private UserRole role;
 
-    @OneToMany(mappedBy = "owner", orphanRemoval = true)
-    private List<EventEntity> ownedEvents;
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<EventEntity> ownedEvents;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RegistrationEntity> registrations;
 
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String login, String passwordHash, Integer age, UserRole role, List<EventEntity> ownedEvents, List<RegistrationEntity> registrations) {
+    public UserEntity(Long id, String login, String passwordHash, Integer age, UserRole role, Set<EventEntity> ownedEvents, List<RegistrationEntity> registrations) {
         this.id = id;
         this.login = login;
         this.passwordHash = passwordHash;
@@ -42,6 +43,10 @@ public class UserEntity {
         this.role = role;
         this.ownedEvents = ownedEvents;
         this.registrations = registrations;
+    }
+
+    public UserEntity(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -84,11 +89,11 @@ public class UserEntity {
         this.role = role;
     }
 
-    public List<EventEntity> getOwnedEvents() {
+    public Set<EventEntity> getOwnedEvents() {
         return ownedEvents;
     }
 
-    public void setOwnedEvents(List<EventEntity> ownedEvents) {
+    public void setOwnedEvents(Set<EventEntity> ownedEvents) {
         this.ownedEvents = ownedEvents;
     }
 

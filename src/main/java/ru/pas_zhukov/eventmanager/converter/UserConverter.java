@@ -8,15 +8,17 @@ import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.repository.UserRepository;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Component
 public class UserConverter {
 
     private final UserRepository userRepository;
+    private final EventConverter eventConverter;
 
-    public UserConverter(UserRepository userRepository) {
+    public UserConverter(UserRepository userRepository, EventConverter eventConverter) {
         this.userRepository = userRepository;
+        this.eventConverter = eventConverter;
     }
 
     public UserResponseDto toResponseDto(User user) {
@@ -24,15 +26,35 @@ public class UserConverter {
     }
 
     public UserEntity toEntity(User user) {
-        return new UserEntity(user.getId(), user.getLogin(), user.getPasswordHash(), user.getAge(), user.getRole(), new ArrayList<>(), new ArrayList<>()); // TODO
+        return new UserEntity(user.getId(),
+                user.getLogin(),
+                user.getPasswordHash(),
+                user.getAge(),
+                user.getRole(),
+                Collections.emptySet(),
+                Collections.emptyList()
+        );
     }
 
     public User toDomain(UserEntity userEntity) {
-        return new User(userEntity.getId(), userEntity.getLogin(), userEntity.getPasswordHash(), userEntity.getAge(), userEntity.getRole());
+        return new User(userEntity.getId(),
+                userEntity.getLogin(),
+                userEntity.getPasswordHash(),
+                userEntity.getAge(),
+                userEntity.getRole(),
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
     }
 
     public User toDomain(SignUpRequestDto signUpRequestDto) {
-        return new User(null, signUpRequestDto.getLogin(), signUpRequestDto.getPassword(), signUpRequestDto.getAge(), null);
+        return new User(null,
+                signUpRequestDto.getLogin(),
+                signUpRequestDto.getPassword(),
+                signUpRequestDto.getAge(),
+                null,
+                Collections.emptyList(),
+                Collections.emptyList());
     }
 
     public User toDomain(org.springframework.security.core.userdetails.User user) {

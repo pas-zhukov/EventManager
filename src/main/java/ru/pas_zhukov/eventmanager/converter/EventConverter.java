@@ -1,5 +1,6 @@
 package ru.pas_zhukov.eventmanager.converter;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.dto.request.EventCreateRequestDto;
 import ru.pas_zhukov.eventmanager.dto.request.EventUpdateRequestDto;
@@ -15,7 +16,7 @@ public class EventConverter {
     private final LocationConverter locationConverter;
     private final UserConverter userConverter;
 
-    public EventConverter(LocationConverter locationConverter, UserConverter userConverter) {
+    public EventConverter(LocationConverter locationConverter, @Lazy UserConverter userConverter) {
         this.locationConverter = locationConverter;
         this.userConverter = userConverter;
     }

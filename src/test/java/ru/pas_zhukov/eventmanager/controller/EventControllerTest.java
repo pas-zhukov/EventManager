@@ -1,6 +1,5 @@
 package ru.pas_zhukov.eventmanager.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.service.LocationService;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

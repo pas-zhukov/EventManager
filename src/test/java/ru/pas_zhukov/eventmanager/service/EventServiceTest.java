@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
 import ru.pas_zhukov.eventmanager.TestInContainer;
 import ru.pas_zhukov.eventmanager.converter.EventConverter;
@@ -13,7 +12,6 @@ import ru.pas_zhukov.eventmanager.converter.LocationConverter;
 import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.dto.request.EventCreateRequestDto;
 import ru.pas_zhukov.eventmanager.dto.request.LocationRequestDto;
-import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.model.Event;
 import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.model.User;
@@ -22,6 +20,7 @@ import ru.pas_zhukov.eventmanager.security.AuthenticationService;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class EventServiceTest extends TestInContainer {
 
@@ -39,6 +38,8 @@ public class EventServiceTest extends TestInContainer {
     private AuthenticationService authenticationService;
     @Autowired
     private UserConverter userConverter;
+    @Autowired
+    private RegistrationService registrationService;
 
     @Test
     @Transactional
@@ -73,6 +74,36 @@ public class EventServiceTest extends TestInContainer {
         Assertions.assertEquals(eventToCreate.getCost(), createdEvent.getCost());
         Assertions.assertEquals(eventToCreate.getDuration(), createdEvent.getDuration());
         Assertions.assertEquals(eventToCreate.getLocation().getId(), createdEvent.getLocation().getId());
+    }
+
+    @Test
+    @WithMockUser(username = "user", authorities = {"USER"})
+    public void shouldSuccessRegisterUser() throws Exception {
+        LocationRequestDto locationRequestDto = new LocationRequestDto(null,
+                "Hermitage",
+                "Saint-Petersburg City, Dvortsovaya ploschad, 1",
+                1000,
+                null);
+        Location createdLocation = locationService.createLocation(locationConverter.toDomain(locationRequestDto));
+
+        EventCreateRequestDto eventToCreateDto = new EventCreateRequestDto(
+                "Lekcii Java",
+                10,
+                new Date(),
+                BigDecimal.valueOf(1200),
+                60,
+                createdLocation.getId()
+        );
+
+        User user = authenticationService.getCurrentAuthenticatedUserOrThrow();
+
+        Event eventToCreate = eventConverter.toDomain(eventToCreateDto);
+        Event createdEvent = eventService.createEvent(user, eventToCreate);
+
+        registrationService.registerUserOnEvent(user, createdEvent);
+        List<Event> userRegistrations = registrationService.getUserRegisteredEvents(user);
+        Assertions.assertFalse(userRegistrations.isEmpty());
+        System.out.println(userRegistrations);
     }
 
     @Test
