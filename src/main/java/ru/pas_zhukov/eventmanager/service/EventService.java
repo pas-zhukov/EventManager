@@ -24,13 +24,15 @@ public class EventService {
     private final EventRepository eventRepository;
     private final LocationRepository locationRepository;
     private final LocationService locationService;
+    private final RegistrationService registrationService;
 
-    public EventService(EventConverter eventConverter, UserConverter userConverter, EventRepository eventRepository, LocationRepository locationRepository, LocationService locationService) {
+    public EventService(EventConverter eventConverter, UserConverter userConverter, EventRepository eventRepository, LocationRepository locationRepository, LocationService locationService, RegistrationService registrationService) {
         this.eventConverter = eventConverter;
         this.userConverter = userConverter;
         this.eventRepository = eventRepository;
         this.locationRepository = locationRepository;
         this.locationService = locationService;
+        this.registrationService = registrationService;
     }
 
     public Event createEvent(User owner, Event eventToCreate) {
@@ -95,5 +97,16 @@ public class EventService {
     }
 
 
+    public void increaseOccupiedPlacesOrThrow(Event event) {
+        if (event.getOccupiedPlaces() >= event.getMaxPlaces()) {
+            throw new IllegalStateException("No more free places");
+        }
+        registrationService.verifyEventNotFinishedAndNotCancelledOrThrow(event);
+        eventRepository.increaseOccupiedPlacesByEventIdIs(event.getId());
+    }
 
+    public void decreaseOccupiedPlacesOrThrow(Event event) {
+        registrationService.verifyEventNotFinishedAndNotCancelledOrThrow(event);
+        eventRepository.decreaseOccupiedPlacesByEventIdIs(event.getId());
+    }
 }

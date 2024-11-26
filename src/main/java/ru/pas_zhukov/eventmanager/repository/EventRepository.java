@@ -57,4 +57,14 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
     @Transactional
     @Query("UPDATE EventEntity e SET e.status = :eventStatus WHERE e.id IN :ids")
     void changeEventsStatus(@Param("ids") List<Long> ids, @Param("eventStatus") EventStatus eventStatus);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE EventEntity e SET e.occupiedPlaces = e.occupiedPlaces + 1 WHERE e.id == :id")
+    void increaseOccupiedPlacesByEventIdIs(@Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE EventEntity e SET e.occupiedPlaces = e.occupiedPlaces - 1 WHERE e.id == :id")
+    void decreaseOccupiedPlacesByEventIdIs(@Param("id") Long id);
 }
