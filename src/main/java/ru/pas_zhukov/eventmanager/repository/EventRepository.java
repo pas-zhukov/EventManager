@@ -51,8 +51,6 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
             @Param("eventStatus") EventStatus eventStatus
     );
 
-    List<EventEntity> findAllByStatusIs(EventStatus status);
-
     @Modifying
     @Transactional
     @Query("UPDATE EventEntity e SET e.status = :eventStatus WHERE e.id IN :ids")
@@ -60,11 +58,18 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE EventEntity e SET e.occupiedPlaces = e.occupiedPlaces + 1 WHERE e.id == :id")
-    void increaseOccupiedPlacesByEventIdIs(@Param("id") Long id);
+    @Query("UPDATE EventEntity e SET e.occupiedPlaces = e.occupiedPlaces + 1 WHERE e.id = :id")
+    void increaseOccupiedPlacesByEventId(@Param("id") Long id);
 
     @Modifying
     @Transactional
-    @Query("UPDATE EventEntity e SET e.occupiedPlaces = e.occupiedPlaces - 1 WHERE e.id == :id")
-    void decreaseOccupiedPlacesByEventIdIs(@Param("id") Long id);
+    @Query("UPDATE EventEntity e SET e.occupiedPlaces = e.occupiedPlaces - 1 WHERE e.id = :id")
+    void decreaseOccupiedPlacesByEventId(@Param("id") Long id);
+
+    @Query("SELECT e FROM EventEntity e WHERE e.status = :status AND current_timestamp >= e.date AND current_timestamp < e.date + (e.duration MINUTE)")
+    List<EventEntity> findAllStartedEventsByStatus(@Param("status") EventStatus status);
+
+    @Query("SELECT e FROM EventEntity e WHERE e.status = :status AND current_timestamp >= e.date + (e.duration MINUTE)")
+    List<EventEntity> findAllFinishedEventsByStatus(@Param("status") EventStatus status);
+
 }

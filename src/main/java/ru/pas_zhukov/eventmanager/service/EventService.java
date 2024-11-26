@@ -12,7 +12,6 @@ import ru.pas_zhukov.eventmanager.model.EventStatus;
 import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.repository.EventRepository;
-import ru.pas_zhukov.eventmanager.repository.LocationRepository;
 
 import java.util.List;
 
@@ -22,21 +21,17 @@ public class EventService {
     private final EventConverter eventConverter;
     private final UserConverter userConverter;
     private final EventRepository eventRepository;
-    private final LocationRepository locationRepository;
     private final LocationService locationService;
-    private final RegistrationService registrationService;
 
-    public EventService(EventConverter eventConverter, UserConverter userConverter, EventRepository eventRepository, LocationRepository locationRepository, LocationService locationService, RegistrationService registrationService) {
+    public EventService(EventConverter eventConverter, UserConverter userConverter, EventRepository eventRepository, LocationService locationService) {
         this.eventConverter = eventConverter;
         this.userConverter = userConverter;
         this.eventRepository = eventRepository;
-        this.locationRepository = locationRepository;
         this.locationService = locationService;
-        this.registrationService = registrationService;
     }
 
     public Event createEvent(User owner, Event eventToCreate) {
-        validateEventPlacesQuantity(eventToCreate);
+        validateEventLocationPlacesQuantity(eventToCreate);
         eventToCreate.setOwner(owner);
         eventToCreate.setStatus(EventStatus.WAIT_START);
         EventEntity eventEntityToCreate = eventConverter.toEntity(eventToCreate);
@@ -46,7 +41,7 @@ public class EventService {
 
     public Event updateEvent(Long id, Event eventToUpdate) {
         Event event = getEventByIdOrThrow(id);
-        validateEventPlacesQuantity(eventToUpdate);
+        validateEventLocationPlacesQuantity(eventToUpdate);
         if (eventToUpdate.getMaxPlaces() < event.getOccupiedPlaces()) {
             throw new IllegalStateException("MaxPlaces must be equal or greater than occupiedPlaces");
         }
@@ -55,7 +50,7 @@ public class EventService {
         return event;
     }
 
-    public void validateEventPlacesQuantity(Event event) {
+    public void validateEventLocationPlacesQuantity(Event event) {
         Location location = locationService.getLocationById(event.getLocation().getId());
         if (location.getCapacity() < event.getMaxPlaces()) {
             throw new IllegalStateException("Location capacity must be equal or less than event maxPlaces");
@@ -101,12 +96,20 @@ public class EventService {
         if (event.getOccupiedPlaces() >= event.getMaxPlaces()) {
             throw new IllegalStateException("No more free places");
         }
-        registrationService.verifyEventNotFinishedAndNotCancelledOrThrow(event);
-        eventRepository.increaseOccupiedPlacesByEventIdIs(event.getId());
+        verifyEventNotFinishedAndNotCancelledOrThrow(event);
+        eventRepository.increaseOccupiedPlacesByEventId(event.getId());
     }
 
     public void decreaseOccupiedPlacesOrThrow(Event event) {
-        registrationService.verifyEventNotFinishedAndNotCancelledOrThrow(event);
-        eventRepository.decreaseOccupiedPlacesByEventIdIs(event.getId());
+        verifyEventNotFinishedAndNotCancelledOrThrow(event);
+        eventRepository.decreaseOccupiedPlacesByEventId(event.getId());
+    }
+
+    public void verifyEventNotFinishedAndNotCancelledOrThrow(Event event) {
+        if (event.getStatus().equals(EventStatus.FINISHED)) {
+            throw new IllegalStateException("Can't modify event that is finished");
+        } else if (event.getStatus().equals(EventStatus.CANCELLED)) {
+            throw new IllegalStateException("Can't modify event that is cancelled");
+        }
     }
 }

@@ -7,7 +7,6 @@ import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.entity.EventEntity;
 import ru.pas_zhukov.eventmanager.entity.RegistrationEntity;
 import ru.pas_zhukov.eventmanager.model.Event;
-import ru.pas_zhukov.eventmanager.model.EventStatus;
 import ru.pas_zhukov.eventmanager.model.Registration;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.repository.EventRepository;
@@ -22,7 +21,7 @@ public class RegistrationService {
     private final UserConverter userConverter;
     private final EventConverter eventConverter;
     private final EventRepository eventRepository;
-    private final EventService eventService;
+    final EventService eventService;
 
     public RegistrationService(RegistrationRepository registrationRepository, UserConverter userConverter, EventConverter eventConverter, EventRepository eventRepository, EventService eventService) {
         this.registrationRepository = registrationRepository;
@@ -37,7 +36,7 @@ public class RegistrationService {
         if (registrationRepository.existsByUserAndEvent(userConverter.toEntity(user), eventConverter.toEntity(event))) {
             throw new IllegalStateException("User with id=%s already registered on event with id=%s".formatted(user.getId(), event.getId()));
         }
-        verifyEventNotFinishedAndNotCancelledOrThrow(event);
+        eventService.verifyEventNotFinishedAndNotCancelledOrThrow(event);
         RegistrationEntity newRegistration = new RegistrationEntity(null, userConverter.toEntity(user), eventConverter.toEntity(event));
         newRegistration = registrationRepository.save(newRegistration);
         eventService.increaseOccupiedPlacesOrThrow(event);
@@ -49,7 +48,7 @@ public class RegistrationService {
         RegistrationEntity foundRegistration = registrationRepository.findByUserAndEvent(userConverter.toEntity(user), eventConverter.toEntity(event)).orElseThrow(
                 () -> new IllegalStateException("Registration for user with id=%s on event with id=%s not found".formatted(user.getId(), event.getId()))
         );
-        verifyEventNotFinishedAndNotCancelledOrThrow(event);
+        eventService.verifyEventNotFinishedAndNotCancelledOrThrow(event);
         eventService.decreaseOccupiedPlacesOrThrow(event);
         registrationRepository.delete(foundRegistration);
     }
@@ -60,11 +59,4 @@ public class RegistrationService {
         return userRegisteredEvents.stream().map(eventConverter::toDomain).toList();
     }
 
-    public void verifyEventNotFinishedAndNotCancelledOrThrow(Event event) {
-        if (event.getStatus().equals(EventStatus.FINISHED)) {
-            throw new IllegalStateException("Can't modify event that is finished");
-        } else if (event.getStatus().equals(EventStatus.CANCELLED)) {
-            throw new IllegalStateException("Can't modify event that is cancelled");
-        }
-    }
 }

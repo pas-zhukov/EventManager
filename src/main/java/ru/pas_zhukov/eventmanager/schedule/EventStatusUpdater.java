@@ -26,13 +26,13 @@ public class EventStatusUpdater {
         logger.info("EventStatusUpdater started");
 
         // найти мероприятия, которые уже начались, но статус WAIT_START
-        List<EventEntity> startedEvents = eventRepository.findAllByStatusIs(EventStatus.WAIT_START);
+        List<EventEntity> startedEvents = eventRepository.findAllStartedEventsByStatus(EventStatus.WAIT_START);
         if (!startedEvents.isEmpty()) {
             eventRepository.changeEventsStatus(startedEvents.stream().mapToLong(EventEntity::getId).boxed().toList(), EventStatus.STARTED);
         }
 
         // найти мероприятия, у которых время окончилось, но статус STARTED
-        List<EventEntity> endedEvents = eventRepository.findAllByStatusIs(EventStatus.STARTED);
+        List<EventEntity> endedEvents = eventRepository.findAllFinishedEventsByStatus(EventStatus.STARTED);
         if (!endedEvents.isEmpty()) {
             eventRepository.changeEventsStatus(endedEvents.stream().mapToLong(EventEntity::getId).boxed().toList(), EventStatus.FINISHED);
         }
