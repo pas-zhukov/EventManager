@@ -9,8 +9,10 @@ import ru.pas_zhukov.eventmanager.dto.request.EventSearchRequestDto;
 import ru.pas_zhukov.eventmanager.entity.EventEntity;
 import ru.pas_zhukov.eventmanager.model.Event;
 import ru.pas_zhukov.eventmanager.model.EventStatus;
+import ru.pas_zhukov.eventmanager.model.Location;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.repository.EventRepository;
+import ru.pas_zhukov.eventmanager.repository.LocationRepository;
 
 import java.util.List;
 
@@ -20,14 +22,19 @@ public class EventService {
     private final EventConverter eventConverter;
     private final UserConverter userConverter;
     private final EventRepository eventRepository;
+    private final LocationRepository locationRepository;
+    private final LocationService locationService;
 
-    public EventService(EventConverter eventConverter, UserConverter userConverter, EventRepository eventRepository) {
+    public EventService(EventConverter eventConverter, UserConverter userConverter, EventRepository eventRepository, LocationRepository locationRepository, LocationService locationService) {
         this.eventConverter = eventConverter;
         this.userConverter = userConverter;
         this.eventRepository = eventRepository;
+        this.locationRepository = locationRepository;
+        this.locationService = locationService;
     }
 
     public Event createEvent(User owner, Event eventToCreate) {
+        validateEventPlacesQuantity(eventToCreate);
         eventToCreate.setOwner(owner);
         eventToCreate.setStatus(EventStatus.WAIT_START);
         EventEntity eventEntityToCreate = eventConverter.toEntity(eventToCreate);
@@ -37,11 +44,21 @@ public class EventService {
 
     public Event updateEvent(Long id, Event eventToUpdate) {
         Event event = getEventByIdOrThrow(id);
+        validateEventPlacesQuantity(eventToUpdate);
+        if (eventToUpdate.getMaxPlaces() < event.getOccupiedPlaces()) {
+            throw new IllegalStateException("MaxPlaces must be equal or greater than occupiedPlaces");
+        }
         event = event.mergeEvent(eventToUpdate);
         eventRepository.save(eventConverter.toEntity(event));
         return event;
     }
 
+    public void validateEventPlacesQuantity(Event event) {
+        Location location = locationService.getLocationById(event.getLocation().getId());
+        if (location.getCapacity() < event.getMaxPlaces()) {
+            throw new IllegalStateException("Location capacity must be equal or less than event maxPlaces");
+        }
+    }
 
     public Event getEventByIdOrThrow(Long id) {
         EventEntity eventEntity = eventRepository.findById(id).orElseThrow(
@@ -50,10 +67,9 @@ public class EventService {
         return eventConverter.toDomain(eventEntity);
     }
 
-    public Event deleteEventById(Long id) {
+    public void deleteEventById(Long id) {
         Event eventToDelete = getEventByIdOrThrow(id);
         eventRepository.removeEventEntityById(id);
-        return eventToDelete;
     }
 
     public List<Event> getUserOwnedEvents(User user) {
