@@ -2,6 +2,8 @@ package ru.pas_zhukov.eventmanager.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "locations")
 public class LocationEntity {
@@ -22,15 +24,19 @@ public class LocationEntity {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    private List<EventEntity> locationEvents;
+
     public LocationEntity() {
     }
 
-    public LocationEntity(Long id, String name, String address, Integer capacity, String description) {
+    public LocationEntity(Long id, String name, String address, Integer capacity, String description, List<EventEntity> locationEvents) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.capacity = capacity;
         this.description = description;
+        this.locationEvents = locationEvents;
     }
 
     public Long getId() {
@@ -71,5 +77,13 @@ public class LocationEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<EventEntity> getLocationEvents() {
+        return locationEvents;
+    }
+
+    public void setLocationEvents(List<EventEntity> locationEvents) {
+        this.locationEvents = locationEvents;
     }
 }

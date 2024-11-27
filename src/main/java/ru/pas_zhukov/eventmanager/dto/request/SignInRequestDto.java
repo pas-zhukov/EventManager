@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Size;
 
 public class SignInRequestDto {
     @NotBlank
-    @Size(min = 5, max = 20)
+    @Size(min = 3, max = 20)
     private String login;
 
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 3)
     private String password;
 
     public SignInRequestDto() {
@@ -20,19 +20,19 @@ public class SignInRequestDto {
         this.password = password;
     }
 
-    public @NotBlank @Size(min = 5, max = 20) String getLogin() {
+    public @NotBlank @Size(min = 3, max = 20) String getLogin() {
         return login;
     }
 
-    public void setLogin(@NotBlank @Size(min = 5, max = 20) String login) {
+    public void setLogin(@NotBlank @Size(min = 3, max = 20) String login) {
         this.login = login;
     }
 
-    public @NotBlank @Size(min = 5) String getPassword() {
+    public @NotBlank @Size(min = 3) String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotBlank @Size(min = 5) String password) {
+    public void setPassword(@NotBlank @Size(min = 3) String password) {
         this.password = password;
     }
 }

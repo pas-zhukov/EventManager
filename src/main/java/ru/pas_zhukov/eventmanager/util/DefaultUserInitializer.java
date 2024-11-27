@@ -1,6 +1,5 @@
 package ru.pas_zhukov.eventmanager.util;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +8,8 @@ import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.model.User;
 import ru.pas_zhukov.eventmanager.model.UserRole;
 import ru.pas_zhukov.eventmanager.repository.UserRepository;
+
+import java.util.ArrayList;
 
 @Component
 public class DefaultUserInitializer {
@@ -39,7 +40,9 @@ public class DefaultUserInitializer {
                 login,
                 hashedPass,
                 21,
-                role
+                role,
+                new ArrayList<>(),
+                new ArrayList<>()
         );
         userRepository.save(userConverter.toEntity(user));
     }
