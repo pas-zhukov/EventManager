@@ -21,7 +21,7 @@ public class RegistrationService {
     private final UserConverter userConverter;
     private final EventConverter eventConverter;
     private final EventRepository eventRepository;
-    final EventService eventService;
+    private final EventService eventService;
 
     public RegistrationService(RegistrationRepository registrationRepository, UserConverter userConverter, EventConverter eventConverter, EventRepository eventRepository, EventService eventService) {
         this.registrationRepository = registrationRepository;

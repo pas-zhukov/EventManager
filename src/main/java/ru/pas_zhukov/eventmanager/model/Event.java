@@ -2,6 +2,7 @@ package ru.pas_zhukov.eventmanager.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Event {
     private Long id;
@@ -14,11 +15,12 @@ public class Event {
     private Integer duration;
     private Location location;
     private EventStatus status;
+    private List<Long> registrations;
 
     public Event() {
     }
 
-    public Event(Long id, String name, User owner, Integer maxPlaces, Integer occupiedPlaces, Date date, BigDecimal cost, Integer duration, Location location, EventStatus status) {
+    public Event(Long id, String name, User owner, Integer maxPlaces, Integer occupiedPlaces, Date date, BigDecimal cost, Integer duration, Location location, EventStatus status, List<Long> registrations) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -29,6 +31,15 @@ public class Event {
         this.duration = duration;
         this.location = location;
         this.status = status;
+        this.registrations = registrations;
+    }
+
+    public List<Long> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<Long> registrations) {
+        this.registrations = registrations;
     }
 
     public Long getId() {

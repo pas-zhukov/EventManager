@@ -45,8 +45,15 @@ public class AuthenticationService {
             throw new IllegalStateException("Authentication not present");
         }
         logger.error(authentication.getPrincipal().getClass().getName());
-        return userService.getUserByLogin(
-                ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername()
-        );
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            return (User) principal;
+        } else if (principal instanceof org.springframework.security.core.userdetails.User) {
+            return userService.getUserByLogin(
+                    ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername()
+            );
+        } else {
+            throw new IllegalStateException("Principal is not a user");
+        }
     }
 }
