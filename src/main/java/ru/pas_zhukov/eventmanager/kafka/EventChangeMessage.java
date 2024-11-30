@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class EventChangeMessage {
-    private List<Long> users;
+    private List<String> users;
     private Long eventId;
     private Long ownerId;
     private Long changedByUserId;
@@ -25,7 +25,7 @@ public class EventChangeMessage {
     public EventChangeMessage() {
     }
 
-    public EventChangeMessage(Long changedByUserId, FieldChange<BigDecimal> cost, FieldChange<Date> date, FieldChange<Integer> duration, Long eventId, FieldChange<Long> locationId, FieldChange<Integer> maxPlaces, FieldChange<String> name, Long ownerId, FieldChange<EventStatus> status, List<Long> users, MessageType messageType) {
+    public EventChangeMessage(Long changedByUserId, FieldChange<BigDecimal> cost, FieldChange<Date> date, FieldChange<Integer> duration, Long eventId, FieldChange<Long> locationId, FieldChange<Integer> maxPlaces, FieldChange<String> name, Long ownerId, FieldChange<EventStatus> status, List<String> users, MessageType messageType) {
         this.changedByUserId = changedByUserId;
         this.cost = cost;
         this.date = date;
@@ -132,11 +132,11 @@ public class EventChangeMessage {
         this.status = status;
     }
 
-    public List<Long> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public void setUsers(List<Long> users) {
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 }

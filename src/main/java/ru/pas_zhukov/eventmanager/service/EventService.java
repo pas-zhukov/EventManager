@@ -8,6 +8,7 @@ import ru.pas_zhukov.eventmanager.converter.UserConverter;
 import ru.pas_zhukov.eventmanager.dto.request.EventSearchRequestDto;
 import ru.pas_zhukov.eventmanager.entity.EventEntity;
 import ru.pas_zhukov.eventmanager.entity.RegistrationEntity;
+import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.kafka.EventChangeMessage;
 import ru.pas_zhukov.eventmanager.kafka.EventSender;
 import ru.pas_zhukov.eventmanager.kafka.FieldChange;
@@ -52,7 +53,7 @@ public class EventService {
                 .withEventId(createdEvent.getId())
                 .withOwner(owner)
                 .withChangedByUserId(owner.getId())
-                .withUsersIds(createdEvent.getRegistrations().stream().mapToLong(RegistrationEntity::getId).boxed().toList())
+                .withUserLogins(createdEvent.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
                 .withCostChange(null, createdEvent.getCost())
                 .withDateChange(null, createdEvent.getDate())
                 .withNameChange(null, createdEvent.getName())
@@ -79,12 +80,18 @@ public class EventService {
 
     private EventChangeMessage generateUpdateEventKafkaMessage(Event event, Event eventToUpdate) {
         User authenticatedUser = authenticationService.getCurrentAuthenticatedUserOrThrow();
+
+        List<String> eventUsersLogins = eventRepository.findById(event.getId()).orElseThrow(
+                () -> new EntityNotFoundException("Event with id=%s not found".formatted(event.getId()))
+        )
+                .getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList();
+
         EventChangeMessage message = EventChangeMessage.builder()
                 .withMessageType(MessageType.UPDATED)
                 .withEventId(event.getId())
                 .withChangedByUserId(authenticatedUser.getId())
                 .withOwner(event.getOwner())
-                .withUsersIds(event.getRegistrations())
+                .withUserLogins(eventUsersLogins)
                 .build();
 
         message.setName(eventToUpdate.getName() != null ? new FieldChange<>(event.getName(), eventToUpdate.getName()) : null);
@@ -120,7 +127,7 @@ public class EventService {
                         .withMessageType(MessageType.DELETED)
                         .withOwnerId(eventToDelete.getOwner().getId())
                         .withChangedByUserId(authenticatedUser.getId())
-                        .withUsersIds(registrations.stream().mapToLong(RegistrationEntity::getId).boxed().toList())
+                        .withUserLogins(registrations.stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
                         .withEventId(id)
                         .build()
         );

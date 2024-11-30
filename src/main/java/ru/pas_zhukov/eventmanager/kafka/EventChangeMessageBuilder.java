@@ -29,11 +29,11 @@ public class EventChangeMessageBuilder {
     }
 
     public EventChangeMessageBuilder withUsers(List<User> users) {
-        event.setUsers(users.stream().mapToLong(User::getId).boxed().toList());
+        event.setUsers(users.stream().map(User::getLogin).toList());
         return this;
     }
 
-    public EventChangeMessageBuilder withUsersIds(List<Long> userIds) {
+    public EventChangeMessageBuilder withUserLogins(List<String> userIds) {
         event.setUsers(userIds);
         return this;
     }

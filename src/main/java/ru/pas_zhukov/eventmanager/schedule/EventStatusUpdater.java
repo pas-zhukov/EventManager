@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.pas_zhukov.eventmanager.entity.EventEntity;
 import ru.pas_zhukov.eventmanager.entity.RegistrationEntity;
+import ru.pas_zhukov.eventmanager.entity.UserEntity;
 import ru.pas_zhukov.eventmanager.kafka.EventChangeMessage;
 import ru.pas_zhukov.eventmanager.kafka.EventSender;
 import ru.pas_zhukov.eventmanager.kafka.MessageType;
@@ -42,7 +43,7 @@ public class EventStatusUpdater {
                             .withMessageType(MessageType.UPDATED)
                             .withEventId(eventEntity.getId())
                             .withOwnerId(eventEntity.getOwner().getId())
-                            .withUsersIds(eventEntity.getRegistrations().stream().mapToLong(RegistrationEntity::getId).boxed().toList())
+                            .withUserLogins(eventEntity.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
                             .withStatusChange(EventStatus.WAIT_START, EventStatus.STARTED)
                             .build()
             );
@@ -59,7 +60,7 @@ public class EventStatusUpdater {
                             .withMessageType(MessageType.UPDATED)
                             .withEventId(eventEntity.getId())
                             .withOwnerId(eventEntity.getOwner().getId())
-                            .withUsersIds(eventEntity.getRegistrations().stream().mapToLong(RegistrationEntity::getId).boxed().toList())
+                            .withUserLogins(eventEntity.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
                             .withStatusChange(EventStatus.STARTED, EventStatus.FINISHED)
                             .build()
             );
