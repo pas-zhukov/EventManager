@@ -26,6 +26,7 @@ public class JwtTokenManager {
         return Jwts
                 .builder()
                 .subject(login)
+                .claim("authority", "ADMIN")
                 .signWith(key)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
