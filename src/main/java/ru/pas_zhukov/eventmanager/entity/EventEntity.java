@@ -43,7 +43,7 @@ public class EventEntity {
     @Column(name = "status", nullable = false)
     private EventStatus status;
 
-    @OneToMany(mappedBy = "event", orphanRemoval = true)
+    @OneToMany(mappedBy = "event", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RegistrationEntity> registrations;
 
     public EventEntity() {

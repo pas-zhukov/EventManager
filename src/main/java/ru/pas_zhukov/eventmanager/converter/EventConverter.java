@@ -6,6 +6,7 @@ import ru.pas_zhukov.eventmanager.dto.request.EventCreateRequestDto;
 import ru.pas_zhukov.eventmanager.dto.request.EventUpdateRequestDto;
 import ru.pas_zhukov.eventmanager.dto.response.EventResponseDto;
 import ru.pas_zhukov.eventmanager.entity.EventEntity;
+import ru.pas_zhukov.eventmanager.entity.RegistrationEntity;
 import ru.pas_zhukov.eventmanager.model.Event;
 import ru.pas_zhukov.eventmanager.model.Location;
 
@@ -45,7 +46,8 @@ public class EventConverter {
                 eventEntity.getCost(),
                 eventEntity.getDuration(),
                 locationConverter.toDomain(eventEntity.getLocation()),
-                eventEntity.getStatus());
+                eventEntity.getStatus(),
+                eventEntity.getRegistrations().stream().map(RegistrationEntity::getId).toList());
     }
 
     public EventResponseDto toResponseDto(Event event) {
