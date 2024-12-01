@@ -35,35 +35,37 @@ public class EventStatusUpdater {
         // найти мероприятия, которые уже начались, но статус WAIT_START
         List<EventEntity> startedEvents = eventRepository.findAllStartedEventsByStatus(EventStatus.WAIT_START);
         if (!startedEvents.isEmpty()) {
+            logger.info("Found started events: {}", startedEvents);
             eventRepository.changeEventsStatus(startedEvents.stream().mapToLong(EventEntity::getId).boxed().toList(), EventStatus.STARTED);
+            startedEvents.forEach(eventEntity -> {
+                eventSender.sendEvent(
+                        EventChangeMessage.builder()
+                                .withMessageType(MessageType.UPDATED)
+                                .withEventId(eventEntity.getId())
+                                .withOwnerId(eventEntity.getOwner().getId())
+                                .withUserLogins(eventEntity.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
+                                .withStatusChange(EventStatus.WAIT_START, EventStatus.STARTED)
+                                .build()
+                );
+            });
         }
-        startedEvents.forEach(eventEntity -> {
-            eventSender.sendEvent(
-                    EventChangeMessage.builder()
-                            .withMessageType(MessageType.UPDATED)
-                            .withEventId(eventEntity.getId())
-                            .withOwnerId(eventEntity.getOwner().getId())
-                            .withUserLogins(eventEntity.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
-                            .withStatusChange(EventStatus.WAIT_START, EventStatus.STARTED)
-                            .build()
-            );
-        });
 
         // найти мероприятия, у которых время окончилось, но статус STARTED
         List<EventEntity> endedEvents = eventRepository.findAllFinishedEventsByStatus(EventStatus.STARTED);
         if (!endedEvents.isEmpty()) {
+            logger.info("Found finished events: {}", endedEvents);
             eventRepository.changeEventsStatus(endedEvents.stream().mapToLong(EventEntity::getId).boxed().toList(), EventStatus.FINISHED);
+            endedEvents.forEach(eventEntity -> {
+                eventSender.sendEvent(
+                        EventChangeMessage.builder()
+                                .withMessageType(MessageType.UPDATED)
+                                .withEventId(eventEntity.getId())
+                                .withOwnerId(eventEntity.getOwner().getId())
+                                .withUserLogins(eventEntity.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
+                                .withStatusChange(EventStatus.STARTED, EventStatus.FINISHED)
+                                .build()
+                );
+            });
         }
-        endedEvents.forEach(eventEntity -> {
-            eventSender.sendEvent(
-                    EventChangeMessage.builder()
-                            .withMessageType(MessageType.UPDATED)
-                            .withEventId(eventEntity.getId())
-                            .withOwnerId(eventEntity.getOwner().getId())
-                            .withUserLogins(eventEntity.getRegistrations().stream().map(RegistrationEntity::getUser).map(UserEntity::getLogin).toList())
-                            .withStatusChange(EventStatus.STARTED, EventStatus.FINISHED)
-                            .build()
-            );
-        });
     }
 }
